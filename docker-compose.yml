@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17
+    container_name: interview_db
+    environment:
+      POSTGRES_USER: interview_user
+      POSTGRES_PASSWORD: interview_password
+      POSTGRES_DB: interview_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+  dbgate:
+    image: dbgate/dbgate
+    container_name: interview_ide
+    restart: unless-stopped
+    ports:
+      - "8080:3000"
+    depends_on:
+      - db
+    environment:
+      # Задаем список ID подключений (у нас одно - con1)
+      CONNECTIONS: "con1"
+
+      # Настройки конкретно для con1
+      LABEL_con1: "Собеседование (БД)"
+      SERVER_con1: "db"
+      ENGINE_con1: "postgres@dbgate-plugin-postgres" # Тот самый драйвер, который "терялся"
+      PORT_con1: 5432
+      USER_con1: "interview_user"
+      PASSWORD_con1: "interview_password"
+      DATABASE_con1: "interview_db"
