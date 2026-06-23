@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задания по SQL</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 2rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        h3 { color: #2980b9; margin-top: 1.5rem; }
+        p.description { color: #7f8c8d; font-style: italic; margin-bottom: 1.5rem; }
+        ol { background-color: #f8f9fa; padding: 15px 15px 15px 35px; border-radius: 5px; border-left: 4px solid #3498db; }
+        li { margin-bottom: 8px; }
+        ul { margin-top: 5px; margin-bottom: 5px; }
+        code { background-color: #eef1f5; padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #c0392b; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Задания по теме SQL</h1>
+
+    <h2>Уровень 1</h2>
+    <p class="description">Базовый синтаксис, понимание агрегаций GROUP BY, умение соединять таблицы и работать с базовыми функциями NULL.</p>
+
+    <h3>Задача 1: Статистика активности пользователей</h3>
+    <p><strong>Условие:</strong></p>
+    <ol>
+        <li>Выведите имена пользователей, их email и количество оформленных ими заказов.</li>
+        <li>Если пользователь не сделал ни одного заказа, он тоже должен быть в списке со значением 0.</li>
+        <li>Отсортируйте результат по убыванию количества заказов.</li>
+    </ol>
+
+    <h3>Задача 2: Каталог активных товаров</h3>
+    <p><strong>Условие:</strong></p>
+    <ol>
+        <li>Выведите названия всех активных товаров, их цену и название категории.</li>
+        <li>Если у товара нет категории, в колонке категории нужно вывести текст <code>'Без категории'</code>.</li>
+    </ol>
+
+    <h2>Уровень 2</h2>
+    <p class="description">Работа с оконными функциями, временными таблицами (CTE), математические вычисления и отсутствие дублирования строк.</p>
+
+    <h3>Задача 3: Топ-1 самых дорогих товаров по категориям</h3>
+    <p><strong>Условие:</strong></p>
+    <ol>
+        <li>Для каждой категории найдите 1 самый дорогой товар.</li>
+        <li>Выведите название категории, название товара и цену.</li>
+    </ol>
+
+    <h3>Задача 4: Расчет чистой выручки</h3>
+    <p><strong>Условие:</strong></p>
+    <ol>
+        <li>Посчитайте чистую выручку для каждого успешно завершенного заказа (<code>status = 'COMPLETED'</code>).</li>
+        <li>Выручка считается так: (сумма всех товаров в заказе минус процент скидки по промокоду) минус возвраты.</li>
+    </ol>
+
+    <h3>Задача 5: Динамика новых и повторных заказов (Условная агрегация)</h3>
+    <p><strong>Условие:</strong></p>
+    <ol>
+        <li>Бизнес хочет понимать структуру продаж.</li>
+        <li>Выведите статистику по каждому месяцу:
+            <ul>
+                <li>Месяц оформления заказа (только для статуса <code>COMPLETED</code>).</li>
+                <li>Количество первых заказов пользователей в этом месяце.</li>
+                <li>Количество повторных заказов пользователей в этом месяце.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h3>Задача 6: Брошенные корзины</h3>
+    <p><strong>Условие:</strong></p>
+    <ol>
+        <li>Маркетологам нужно найти сегмент пользователей, которые добавляли товары в корзину (<code>add_to_cart</code>), но ни разу за всю свою историю не нажимали кнопку покупки (<code>purchase_click</code>).</li>
+        <li>Выведите список <code>user_id</code> таких пользователей.</li>
+    </ol>
+
+    <h3>Задача 7: Time to First Purchase</h3>
+    <p><strong>Условие:</strong></p>
+    <ol>
+        <li>Анализ скорости принятия решения.</li>
+        <li>Напишите запрос, который посчитает среднее количество дней от даты регистрации пользователя до его первого успешно завершенного заказа (<code>status = 'COMPLETED'</code>).</li>
+        <li>Сгруппируйте результат по источникам трафика (<code>utm_source</code>). Если <code>utm_source</code> пустой, считайте его источником <code>'organic'</code>.</li>
+    </ol>
+
+    <h2>Уровень 3</h2>
+    <p class="description">Сложные аналитические запросы.</p>
+
+    <h3>Задача 8: Генерация "Хлебных крошек" (Рекурсия)</h3>
+    <p><strong>Условие:</strong></p>
+    <ol>
+        <li>Напишите запрос, который выведет все товары, но вместо простого <code>category_id</code> сгенерирует колонку с полным путем категории от корня.</li>
+        <li>Формат колонки: <code>Электроника -&gt; Смартфоны -&gt; Чехлы и стекла</code>.</li>
+    </ol>
+
+    <h3>Задача 9: Сессионизация логов</h3>
+    <p><strong>Условие:</strong></p>
+    <ol>
+        <li>Таблица <code>user_actions_log</code> содержит сырой кликстрим.</li>
+        <li>Разбейте действия пользователей на логические "сессии".</li>
+        <li>Правило: новая сессия пользователя начинается, если между его текущим и предыдущим действием прошло более 30 минут.</li>
+        <li>Назначьте каждому действию номер сессии этого пользователя (1, 2, 3...).</li>
+    </ol>
+</div>
+</body>
+</html>

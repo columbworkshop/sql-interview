@@ -122,3 +122,14 @@ INSERT INTO user_actions_log (user_id, action_type, page_url, created_at) VALUES
                                                                               (3, 'purchase_click', '/order/checkout', '2025-02-10 11:00:00'),
                                                                               (1, 'page_view', '/catalog', '2025-02-15 12:00:00'), -- Возврат юзера 1 в феврале
                                                                               (1, 'page_view', '/catalog', '2025-03-05 08:45:00'); -- Возврат юзера 1 в марте
+
+-- ========================================================
+-- НАСТРОЙКА ПРАВ ДОСТУПА (READ-ONLY ДЛЯ КАНДИДАТА)
+-- ========================================================
+
+-- УЗ для кандидата
+CREATE USER candidate WITH PASSWORD 'candidate_pwd';
+GRANT CONNECT ON DATABASE interview_db TO candidate;
+GRANT USAGE ON SCHEMA public TO candidate;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO candidate;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO candidate;

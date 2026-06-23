@@ -5,8 +5,8 @@ services:
     image: postgres:17
     container_name: interview_db
     environment:
-      POSTGRES_USER: interview_user
-      POSTGRES_PASSWORD: interview_password
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin_password
       POSTGRES_DB: interview_db
     ports:
       - "5432:5432"
@@ -19,18 +19,24 @@ services:
     container_name: interview_ide
     restart: unless-stopped
     ports:
-      - "8080:3000"
+      - "8080:3000" # DbGate доступен по порту 8080
     depends_on:
       - db
     environment:
-      # Задаем список ID подключений (у нас одно - con1)
       CONNECTIONS: "con1"
-
-      # Настройки конкретно для con1
       LABEL_con1: "Собеседование (БД)"
       SERVER_con1: "db"
-      ENGINE_con1: "postgres@dbgate-plugin-postgres" # Тот самый драйвер, который "терялся"
+      ENGINE_con1: "postgres@dbgate-plugin-postgres"
       PORT_con1: 5432
-      USER_con1: "interview_user"
-      PASSWORD_con1: "interview_password"
+      USER_con1: "candidate"         # Подключаемся под read-only пользователем
+      PASSWORD_con1: "candidate_pwd" # Пароль read-only пользователя
       DATABASE_con1: "interview_db"
+
+  tasks_web:
+    image: nginx:alpine
+    container_name: interview_tasks
+    restart: unless-stopped
+    ports:
+      - "8081:80" # Задания будут доступны по порту 8081
+    volumes:
+      - ./tasks.html:/usr/share/nginx/html/index.html:ro
